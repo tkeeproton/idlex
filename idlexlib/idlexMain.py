@@ -36,6 +36,10 @@
 ##
 ##    """
 
+# This module hotpatches EditorWindow.py to load idlex extensions properly
+
+from __future__ import print_function
+
 # to make this work on 3.12
 import sys, importlib.util
 if "imp" not in sys.modules:
@@ -46,12 +50,6 @@ if "imp" not in sys.modules:
         return spec.loader if spec else None
     imp.find_module = find_module
     sys.modules["imp"] = imp
-
-
-# This module hotpatches EditorWindow.py to load idlex extensions properly
-
-from __future__ import print_function
-import sys
 
 from idlexlib.extensionManager import extensionManager
 
