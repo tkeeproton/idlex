@@ -30,6 +30,15 @@ class InvalidConfigSet(Exception): pass
 class InvalidFgBg(Exception): pass
 class InvalidTheme(Exception): pass
 
+import configparser
+
+for cls in (
+    configparser.ConfigParser,
+    getattr(configparser, "RawConfigParser", None),
+):
+    if cls and not hasattr(cls, "readfp"):
+        cls.readfp = cls.read_file
+
 class IdleConfParser(ConfigParser):
     """
     A ConfigParser specialised for idle configuration file handling
