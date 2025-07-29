@@ -36,6 +36,16 @@
 ##
 ##    """
 
+# to make this work on 3.12
+import sys, importlib.util
+if "imp" not in sys.modules:
+    spec = importlib.util.spec_from_loader("imp", loader=None)
+    imp = importlib.util.module_from_spec(spec)
+    def find_module(name, path=None):
+        spec = importlib.util.find_spec(name, path)
+        return spec.loader if spec else None
+    imp.find_module = find_module
+    sys.modules["imp"] = imp
 
 
 # This module hotpatches EditorWindow.py to load idlex extensions properly
