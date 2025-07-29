@@ -31,13 +31,14 @@ class InvalidFgBg(Exception): pass
 class InvalidTheme(Exception): pass
 
 import configparser
+configparser.RawConfigParser.readfp = configparser.RawConfigParser.read_file
 
-for cls in (
-    configparser.ConfigParser,
-    getattr(configparser, "RawConfigParser", None),
-):
-    if cls and not hasattr(cls, "readfp"):
-        cls.readfp = cls.read_file
+# for cls in (
+#     configparser.ConfigParser,
+#     getattr(configparser, "RawConfigParser", None),
+# ):
+#     if cls and not hasattr(cls, "readfp"):
+#         cls.readfp = cls.read_file
 
 class IdleConfParser(ConfigParser):
     """
