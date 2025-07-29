@@ -132,7 +132,7 @@ def _countlines(s, linewidth=_LINEWIDTH, tabwidth=_TABWIDTH):
 
 class ExpandingButton(Tkinter.Button):
 
-    color_pat = re.compile('\x01?\x1b\[(.*?)m\x02?')
+    color_pat = re.compile(r'\x01?\x1b\[(.*?)m\x02?')
     
     def __init__(self, s, tags, numoflines, squeezer):
         self.s = self.strip_ansi_colors(s)
