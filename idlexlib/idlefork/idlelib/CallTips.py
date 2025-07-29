@@ -144,11 +144,24 @@ def get_argspec(ob):
         fob = ob_call
     else:
         fob = ob
+    # if isinstance(fob, (types.FunctionType, types.MethodType)):
+    #     argspec = inspect.formatargspec(*inspect.getfullargspec(fob))
+    #     if (isinstance(ob, (type, types.MethodType)) or
+    #             isinstance(ob_call, types.MethodType)):
+    #         argspec = _first_param.sub("", argspec)
+
     if isinstance(fob, (types.FunctionType, types.MethodType)):
-        argspec = inspect.formatargspec(*inspect.getfullargspec(fob))
+        try:
+            # Python 3.3+ 권장 API
+            argspec = str(inspect.signature(fob))
+        except (ValueError, AttributeError):
+            # 포맷되지 않은 경우 기존 방식으로 폴백
+            argspec = inspect.formatargspec(*inspect.getfullargspec(fob))
+        # 바운드 메서드나 클래스 __init__일 때 첫 파라미터 제거
         if (isinstance(ob, (type, types.MethodType)) or
                 isinstance(ob_call, types.MethodType)):
             argspec = _first_param.sub("", argspec)
+
 
     lines = (textwrap.wrap(argspec, _MAX_COLS, subsequent_indent=_INDENT)
             if len(argspec) > _MAX_COLS else [argspec] if argspec else [])
